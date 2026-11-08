@@ -20,22 +20,28 @@ export default function HistoryPage() {
   const [verdictFilter, setVerdictFilter] = useState('all');
   const [loading, setLoading] = useState(true);
 
-  const fetchHistory = async () => {
-    try {
-      const res = await fetch(`/api/v1/history?q=${encodeURIComponent(searchQuery)}&verdict=${verdictFilter}`);
-      if (res.ok) {
-        const data = await res.json();
-        setScans(data.items || []);
-      }
-    } catch {
-      //
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchHistory();
+    let isCancelled = false;
+    const timer = setTimeout(async () => {
+      try {
+        const res = await fetch(`/api/v1/history?q=${encodeURIComponent(searchQuery)}&verdict=${verdictFilter}`);
+        if (res.ok && !isCancelled) {
+          const data = await res.json();
+          setScans(data.items || []);
+        }
+      } catch {
+        //
+      } finally {
+        if (!isCancelled) {
+          setLoading(false);
+        }
+      }
+    }, searchQuery ? 250 : 0);
+
+    return () => {
+      isCancelled = true;
+      clearTimeout(timer);
+    };
   }, [searchQuery, verdictFilter]);
 
   const handleClearHistory = async () => {

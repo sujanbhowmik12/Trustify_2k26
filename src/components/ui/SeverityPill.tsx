@@ -5,7 +5,7 @@ interface SeverityPillProps {
   severity: Severity;
 }
 
-export const SeverityPill: React.FC<SeverityPillProps> = ({ severity }) => {
+export const SeverityPill: React.FC<SeverityPillProps> = React.memo(({ severity }) => {
   const styles: Record<Severity, string> = {
     low: 'bg-[#74B3A8]/20 text-[#213843] border-[#74B3A8]/50',
     medium: 'bg-[#FEAF76]/30 text-[#213843] border-[#FEAF76]/70',
@@ -22,5 +22,7 @@ export const SeverityPill: React.FC<SeverityPillProps> = ({ severity }) => {
       {severity}
     </span>
   );
-};
+});
+
+SeverityPill.displayName = 'SeverityPill';
 

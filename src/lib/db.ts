@@ -93,7 +93,12 @@ export function getDatabase(): DatabaseSync {
   const db = new DatabaseSync(dbPath);
 
   try {
-    db.exec('PRAGMA journal_mode = WAL;');
+    db.exec(`
+      PRAGMA journal_mode = WAL;
+      PRAGMA synchronous = NORMAL;
+      PRAGMA temp_store = MEMORY;
+      PRAGMA cache_size = -64000;
+    `);
   } catch {
     // fallback if WAL unavailable
   }
@@ -108,6 +113,7 @@ export function getDatabase(): DatabaseSync {
       latency REAL NOT NULL,
       created_at TEXT NOT NULL
     );
+    CREATE INDEX IF NOT EXISTS idx_scans_created_at ON scans(created_at);
   `);
 
   // Alerts table
@@ -124,10 +130,17 @@ export function getDatabase(): DatabaseSync {
       is_dismissed INTEGER DEFAULT 0,
       created_at TEXT NOT NULL
     );
+    CREATE INDEX IF NOT EXISTS idx_alerts_dismissed_created ON alerts(is_dismissed, created_at);
   `);
 
   global.__TRUSTIFY_SQLITE_INSTANCE = db;
   return db;
+}
+
+let cachedScanStats: { data: StatsResponse; expiresAt: number } | null = null;
+
+export function invalidateStatsCache(): void {
+  cachedScanStats = null;
 }
 
 export function saveScanRecord(record: {
@@ -150,6 +163,7 @@ export function saveScanRecord(record: {
     VALUES (?, ?, ?, ?, ?, ?)
   `);
   stmt.run(id, record.url, score, verdict, latency, created_at);
+  cachedScanStats = null;
 
   return {
     id,
@@ -189,6 +203,7 @@ export function saveAlertRecord(alert: {
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
   stmt.run(id, scan_id, alert.type, alert.title, alert.detail, alert.url || null, alert.severity, is_read, is_dismissed, created_at);
+  cachedScanStats = null;
 }
 
 export function getAllScanRecords(limit = 100): ScanRecord[] {
@@ -205,6 +220,11 @@ export function getAllScanRecords(limit = 100): ScanRecord[] {
 }
 
 export function getScanStats(): StatsResponse {
+  const now = Date.now();
+  if (cachedScanStats && cachedScanStats.expiresAt > now) {
+    return cachedScanStats.data;
+  }
+
   const db = getDatabase();
 
   const agg = db.prepare(`
@@ -227,8 +247,11 @@ export function getScanStats(): StatsResponse {
   const suspiciousPct = totalScans > 0 ? Math.round((suspiciousCount / totalScans) * 100) : 0;
   const maliciousPct = totalScans > 0 ? Math.max(0, 100 - safePct - suspiciousPct) : 0;
 
-  // 7-day trend
-  const allRows = db.prepare(`SELECT score, created_at FROM scans`).all() as any[];
+  // 7-day trend (query only records within the last 7 days)
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - 7);
+  const cutoffStr = cutoffDate.toISOString().slice(0, 10);
+  const allRows = db.prepare(`SELECT score, created_at FROM scans WHERE created_at >= ?`).all(cutoffStr) as any[];
   const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const sevenDayTrend: TrendDay[] = [];
 
@@ -299,7 +322,7 @@ export function getScanStats(): StatsResponse {
     },
   ];
 
-  return {
+  const response: StatsResponse = {
     totalScans,
     total_scans: totalScans,
     safeCount,
@@ -319,5 +342,12 @@ export function getScanStats(): StatsResponse {
     recent_alerts: recentAlerts,
     threatTypes,
   };
+
+  cachedScanStats = {
+    data: response,
+    expiresAt: now + 1500, // 1.5s cache
+  };
+
+  return response;
 }
 

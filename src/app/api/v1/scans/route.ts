@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
 
     // Check Cache
     const urlHash = crypto.createHash('sha256').update(normalizedUrl).digest('hex');
-    for (const cached of Array.from(db.scans.values())) {
+    for (const cached of db.scans.values()) {
       if (cached.normalizedUrl === normalizedUrl) {
         saveScanRecord({
           id: cached.id,
@@ -69,9 +69,12 @@ export async function POST(req: NextRequest) {
     );
 
     // Simulated community intel risk
-    const existingReports = Array.from(db.threatReports.values()).filter(
-      r => r.domain === hostname || normalizedUrl.includes(r.domain)
-    );
+    const existingReports = [];
+    for (const r of db.threatReports.values()) {
+      if (r.domain === hostname || normalizedUrl.includes(r.domain)) {
+        existingReports.push(r);
+      }
+    }
     let intelRisk = 0;
     if (existingReports.length > 0) {
       intelRisk = Math.min(95, existingReports.length * 30);

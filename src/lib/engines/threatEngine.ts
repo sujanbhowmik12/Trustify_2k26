@@ -55,26 +55,37 @@ function calculateEntropy(str: string): number {
   return Number(entropy.toFixed(3));
 }
 
-// Levenshtein distance for lookalike detection
+// Levenshtein distance for lookalike detection (optimized with rolling row buffers)
 function levenshteinDistance(a: string, b: string): number {
   const m = a.length;
   const n = b.length;
-  const d: number[][] = [];
+  if (m === 0) return n;
+  if (n === 0) return m;
 
-  for (let i = 0; i <= m; i++) d[i] = [i];
-  for (let j = 0; j <= n; j++) d[0][j] = j;
+  let prev = new Int32Array(n + 1);
+  let curr = new Int32Array(n + 1);
+
+  for (let j = 0; j <= n; j++) {
+    prev[j] = j;
+  }
 
   for (let i = 1; i <= m; i++) {
+    curr[0] = i;
+    const aCode = a.charCodeAt(i - 1);
     for (let j = 1; j <= n; j++) {
-      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
-      d[i][j] = Math.min(
-        d[i - 1][j] + 1,      // deletion
-        d[i][j - 1] + 1,      // insertion
-        d[i - 1][j - 1] + cost // substitution
+      const cost = aCode === b.charCodeAt(j - 1) ? 0 : 1;
+      curr[j] = Math.min(
+        prev[j] + 1,        // deletion
+        curr[j - 1] + 1,    // insertion
+        prev[j - 1] + cost  // substitution
       );
     }
+    const temp = prev;
+    prev = curr;
+    curr = temp;
   }
-  return d[m][n];
+
+  return prev[n];
 }
 
 // Normalize homoglyphs/common character substitutions

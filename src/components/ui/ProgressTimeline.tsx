@@ -12,7 +12,7 @@ interface ProgressTimelineProps {
   currentProgress?: number; // 0.0 - 1.0
 }
 
-export const ProgressTimeline: React.FC<ProgressTimelineProps> = ({
+export const ProgressTimeline: React.FC<ProgressTimelineProps> = React.memo(({
   stages,
   currentProgress = 0,
 }) => {
@@ -68,5 +68,7 @@ export const ProgressTimeline: React.FC<ProgressTimelineProps> = ({
       </div>
     </div>
   );
-};
+});
+
+ProgressTimeline.displayName = 'ProgressTimeline';
 

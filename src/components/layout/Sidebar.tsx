@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
@@ -24,7 +24,7 @@ interface SidebarProps {
   onClose?: () => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({
+export const Sidebar: React.FC<SidebarProps> = React.memo(({
   alertsCount,
   unreadAlertsCount,
   isOpen = false,
@@ -33,7 +33,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const pathname = usePathname();
   const displayBadge = alertsCount !== undefined ? alertsCount : unreadAlertsCount;
 
-  const navItems = [
+  const navItems = useMemo(() => [
     { href: '/', label: 'Dashboard', icon: LayoutDashboard },
     { href: '/scan', label: 'URL Scanner', icon: Search },
     { href: '/certificate', label: 'Certificate Forensics', icon: Lock },
@@ -42,7 +42,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     { href: '/history', label: 'Scan History', icon: History },
     { href: '/settings', label: 'Settings & API', icon: Settings },
     { href: '/help', label: 'Help & Knowledge Base', icon: HelpCircle },
-  ];
+  ], [displayBadge]);
 
   return (
     <>
@@ -142,5 +142,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </aside>
     </>
   );
-};
+});
+
+Sidebar.displayName = 'Sidebar';
 

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import Link from 'next/link';
 import {
   ShieldCheck,
@@ -100,27 +100,57 @@ export default function DashboardPage() {
     loadStats();
   }, []);
 
-  const totalScans = data?.totalScans ?? data?.total_scans ?? 0;
-  const safeCount = data?.safeCount ?? data?.safe_count ?? 0;
-  const maliciousCount = data?.maliciousCount ?? data?.malicious_count ?? 0;
-  const suspiciousCount = data?.suspiciousCount ?? data?.suspicious_count ?? 0;
-  const avgLatency = data?.avgLatency ?? data?.avg_latency ?? 0;
-  const safePct = data?.safePct ?? (totalScans > 0 ? Math.round((safeCount / totalScans) * 100) : 0);
-  const suspiciousPct = data?.suspiciousPct ?? (totalScans > 0 ? Math.round((suspiciousCount / totalScans) * 100) : 0);
-  const maliciousPct = data?.maliciousPct ?? (totalScans > 0 ? Math.max(0, 100 - safePct - suspiciousPct) : 0);
-  const trendData = data?.sevenDayTrend || data?.trend || [];
-  const recentAlerts = data?.recentAlerts || data?.recent_alerts || [];
-  const threatTypes = data?.threatTypes || [];
+  const {
+    totalScans,
+    safeCount,
+    maliciousCount,
+    suspiciousCount,
+    avgLatency,
+    safePct,
+    suspiciousPct,
+    maliciousPct,
+    trendData,
+    recentAlerts,
+    threatTypes,
+    donutData,
+  } = useMemo(() => {
+    const total = data?.totalScans ?? data?.total_scans ?? 0;
+    const safe = data?.safeCount ?? data?.safe_count ?? 0;
+    const malicious = data?.maliciousCount ?? data?.malicious_count ?? 0;
+    const suspicious = data?.suspiciousCount ?? data?.suspicious_count ?? 0;
+    const latency = data?.avgLatency ?? data?.avg_latency ?? 0;
+    const sPct = data?.safePct ?? (total > 0 ? Math.round((safe / total) * 100) : 0);
+    const susPct = data?.suspiciousPct ?? (total > 0 ? Math.round((suspicious / total) * 100) : 0);
+    const mPct = data?.maliciousPct ?? (total > 0 ? Math.max(0, 100 - sPct - susPct) : 0);
+    const trend = data?.sevenDayTrend || data?.trend || [];
+    const alerts = data?.recentAlerts || data?.recent_alerts || [];
+    const threats = data?.threatTypes || [];
+
+    const donut = total > 0
+      ? [
+          { name: 'Safe', value: sPct, color: '#468D8B' },
+          { name: 'Suspicious', value: susPct, color: '#FEAF76' },
+          { name: 'Malicious', value: mPct, color: '#DA6D58' },
+        ]
+      : [{ name: 'No Data', value: 100, color: '#E8C9AA' }];
+
+    return {
+      totalScans: total,
+      safeCount: safe,
+      maliciousCount: malicious,
+      suspiciousCount: suspicious,
+      avgLatency: latency,
+      safePct: sPct,
+      suspiciousPct: susPct,
+      maliciousPct: mPct,
+      trendData: trend,
+      recentAlerts: alerts,
+      threatTypes: threats,
+      donutData: donut,
+    };
+  }, [data]);
 
   const isEmpty = !loading && totalScans === 0;
-
-  const donutData = totalScans > 0
-    ? [
-        { name: 'Safe', value: safePct, color: '#468D8B' },
-        { name: 'Suspicious', value: suspiciousPct, color: '#FEAF76' },
-        { name: 'Malicious', value: maliciousPct, color: '#DA6D58' },
-      ]
-    : [{ name: 'No Data', value: 100, color: '#E8C9AA' }];
 
   return (
     <div className="space-y-8">

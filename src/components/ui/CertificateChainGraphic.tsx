@@ -7,7 +7,7 @@ interface CertificateChainGraphicProps {
   valid?: boolean;
 }
 
-export const CertificateChainGraphic: React.FC<CertificateChainGraphicProps> = ({
+export const CertificateChainGraphic: React.FC<CertificateChainGraphicProps> = React.memo(({
   chain = [],
   valid = true,
 }) => {
@@ -97,5 +97,7 @@ export const CertificateChainGraphic: React.FC<CertificateChainGraphicProps> = (
       })}
     </div>
   );
-};
+});
+
+CertificateChainGraphic.displayName = 'CertificateChainGraphic';
 

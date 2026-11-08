@@ -5,9 +5,22 @@ const resolve4Async = promisify(dns.resolve4);
 const resolve6Async = promisify(dns.resolve6);
 
 function withTimeout<T>(promise: Promise<T>, timeoutMs: number, fallback: T): Promise<T> {
+  let timer: NodeJS.Timeout | undefined;
+  const timeoutPromise = new Promise<T>((resolve) => {
+    timer = setTimeout(() => resolve(fallback), timeoutMs);
+  });
   return Promise.race([
-    promise,
-    new Promise<T>((resolve) => setTimeout(() => resolve(fallback), timeoutMs)),
+    promise.then(
+      (res) => {
+        if (timer) clearTimeout(timer);
+        return res;
+      },
+      (err) => {
+        if (timer) clearTimeout(timer);
+        throw err;
+      }
+    ),
+    timeoutPromise,
   ]);
 }
 
@@ -108,16 +121,19 @@ export async function validateUrlForSSRF(rawUrl: string): Promise<SSRFValidation
     }
   }
 
-  // Resolve hostname via DNS
+  // Resolve hostname via DNS concurrently for IPv4 and IPv6
   try {
-    const addresses = await withTimeout(resolve4Async(hostname).catch(() => [] as string[]), 800, [] as string[]);
+    const [addresses, addresses6] = await Promise.all([
+      withTimeout(resolve4Async(hostname).catch(() => [] as string[]), 800, [] as string[]),
+      withTimeout(resolve6Async(hostname).catch(() => [] as string[]), 800, [] as string[]),
+    ]);
+
     for (const ip of addresses) {
       if (isPrivateIp(ip)) {
         return { safe: false, reason: `Hostname resolves to private/internal IP address (${ip})` };
       }
     }
 
-    const addresses6 = await withTimeout(resolve6Async(hostname).catch(() => [] as string[]), 800, [] as string[]);
     for (const ip6 of addresses6) {
       if (isPrivateIp(ip6)) {
         return { safe: false, reason: `Hostname resolves to internal IPv6 address (${ip6})` };

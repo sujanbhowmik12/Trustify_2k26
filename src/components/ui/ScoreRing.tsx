@@ -7,7 +7,7 @@ interface ScoreRingProps {
   showLabel?: boolean;
 }
 
-export const ScoreRing: React.FC<ScoreRingProps> = ({
+export const ScoreRing: React.FC<ScoreRingProps> = React.memo(({
   score,
   size = 120,
   strokeWidth = 10,
@@ -78,5 +78,7 @@ export const ScoreRing: React.FC<ScoreRingProps> = ({
       )}
     </div>
   );
-};
+});
+
+ScoreRing.displayName = 'ScoreRing';
 

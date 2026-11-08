@@ -11,6 +11,9 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
   const [alertsCount, setAlertsCount] = useState<number>(0);
   const [unreadCount, setUnreadCount] = useState<number>(0);
 
+  const handleToggleSidebar = useCallback(() => setSidebarOpen(prev => !prev), []);
+  const handleCloseSidebar = useCallback(() => setSidebarOpen(false), []);
+
   const fetchAlertsCount = useCallback(async () => {
     try {
       const res = await fetch('/api/v1/alerts');
@@ -18,8 +21,8 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
         const data = await res.json();
         const total = data.total ?? (Array.isArray(data.items) ? data.items.length : 0);
         const unread = data.unread_count ?? 0;
-        setAlertsCount(total);
-        setUnreadCount(unread);
+        setAlertsCount(prev => (prev === total ? prev : total));
+        setUnreadCount(prev => (prev === unread ? prev : unread));
       }
     } catch {
       // fallback
@@ -31,17 +34,31 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
     fetchAlertsCount();
   }, [pathname, fetchAlertsCount]);
 
-  // Refresh alert count on custom event and polling
+  // Refresh alert count on custom event and smart visibility-aware polling
   useEffect(() => {
     const handleUpdate = () => {
       fetchAlertsCount();
     };
 
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        fetchAlertsCount();
+      }
+    };
+
     window.addEventListener('trustify_alerts_updated', handleUpdate);
-    const interval = setInterval(fetchAlertsCount, 3000);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    const interval = setInterval(() => {
+      if (typeof document !== 'undefined' && document.visibilityState !== 'visible') {
+        return;
+      }
+      fetchAlertsCount();
+    }, 4000);
 
     return () => {
       window.removeEventListener('trustify_alerts_updated', handleUpdate);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       clearInterval(interval);
     };
   }, [fetchAlertsCount]);
@@ -51,7 +68,7 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
       {/* Fixed Sidebar */}
       <Sidebar
         isOpen={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
+        onClose={handleCloseSidebar}
         alertsCount={alertsCount}
         unreadAlertsCount={unreadCount}
       />
@@ -59,7 +76,7 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
       {/* Main Content Area */}
       <div className="flex-1 lg:pl-64 flex flex-col min-h-screen">
         <Topbar
-          onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
+          onToggleSidebar={handleToggleSidebar}
           unreadCount={unreadCount}
         />
 

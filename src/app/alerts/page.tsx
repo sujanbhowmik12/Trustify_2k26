@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import {
   Bell,
@@ -85,12 +85,14 @@ export default function AlertsPage() {
     }
   };
 
-  const filteredAlerts = alerts.filter(a => {
-    if (filter === 'unread') return !a.isRead;
-    if (filter === 'high') return a.severity === 'high' || a.severity === 'critical';
-    if (filter === 'medium') return a.severity === 'medium';
-    return true;
-  });
+  const filteredAlerts = useMemo(() => {
+    return alerts.filter(a => {
+      if (filter === 'unread') return !a.isRead;
+      if (filter === 'high') return a.severity === 'high' || a.severity === 'critical';
+      if (filter === 'medium') return a.severity === 'medium';
+      return true;
+    });
+  }, [alerts, filter]);
 
   return (
     <div className="space-y-8">

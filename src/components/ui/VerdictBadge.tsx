@@ -7,7 +7,7 @@ interface VerdictBadgeProps {
   size?: 'sm' | 'md' | 'lg';
 }
 
-export const VerdictBadge: React.FC<VerdictBadgeProps> = ({ verdict, size = 'md' }) => {
+export const VerdictBadge: React.FC<VerdictBadgeProps> = React.memo(({ verdict, size = 'md' }) => {
   const configs = {
     safe: {
       label: 'Safe',
@@ -66,5 +66,7 @@ export const VerdictBadge: React.FC<VerdictBadgeProps> = ({ verdict, size = 'md'
       <span>{config.label}</span>
     </span>
   );
-};
+});
+
+VerdictBadge.displayName = 'VerdictBadge';
 
