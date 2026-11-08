@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   Bell,
@@ -28,7 +28,7 @@ function getInitials(name: string): string {
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
 }
 
-export const Topbar: React.FC<TopbarProps> = ({
+export const Topbar: React.FC<TopbarProps> = React.memo(({
   onToggleSidebar,
   unreadCount = 2,
 }) => {
@@ -151,7 +151,7 @@ export const Topbar: React.FC<TopbarProps> = ({
     }
   };
 
-  const initials = getInitials(profileName);
+  const initials = useMemo(() => getInitials(profileName), [profileName]);
 
   return (
     <>
@@ -332,4 +332,6 @@ export const Topbar: React.FC<TopbarProps> = ({
       )}
     </>
   );
-};
+});
+
+Topbar.displayName = 'Topbar';
