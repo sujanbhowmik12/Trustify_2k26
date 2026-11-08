@@ -210,13 +210,21 @@ Tools provided:
 ---
 
 <a id="team"></a>
-## 👥 Team & HackMatrix 2026
+## Meet Our Team
 
-Developed with pride for **HackMatrix 2026** under the **AI-Powered Web Threat Detection & Digital Trust Intelligence** challenge.
+| Number | Team Member | GitHub Profile |
+|:---:|---|---|
+| 1 | **Sibsankar Maity** | [@oii-siba](https://github.com/oii-siba) |
+| 2 | **Arghya Chowdhury** | [@arghachowdhury2006-gif](https://github.com/arghachowdhury2006-gif) |
+| 3 | **Sujan Bhowmik** | [@sujanbhowmik12](https://github.com/sujanbhowmik12) |
+| 4 | **Sayan Pattanayak** | [@sayan3239](https://github.com/sayan3239) |
 
-- **Project**: Trustify
-- **Event**: HackMatrix 2026
 - **License**: MIT
+
+<p align="center">
+  Built with innovation, teamwork & passion ❤️<br />
+  HackMatrix 2026
+</p>
 
 ---
 
