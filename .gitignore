@@ -16,6 +16,10 @@ build
 # misc
 .DS_Store
 *.pem
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
 
 # debug
 npm-debug.log*

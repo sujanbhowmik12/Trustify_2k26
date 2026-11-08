@@ -250,9 +250,20 @@ export const Topbar: React.FC<TopbarProps> = ({
                     value={editName}
                     onChange={(e) => setEditName(e.target.value)}
                     placeholder="e.g. Argha Banerjee or Security Analyst"
-                    className="w-full bg-[#FBEBDA] text-ink placeholder-ink-60 text-xs pl-10 pr-4 py-3 rounded-xl border border-[#E8C9AA] focus:outline-none focus:border-[#468D8B] font-medium transition-all"
+                    className="w-full bg-[#FBEBDA] text-ink placeholder-ink-60 text-xs pl-10 pr-9 py-3 rounded-xl border border-[#E8C9AA] focus:outline-none focus:border-[#468D8B] font-medium transition-all"
                   />
                   <User size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-60" />
+                  {editName && (
+                    <button
+                      type="button"
+                      onClick={() => setEditName('')}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#E8C9AA]/60 hover:bg-[#E8C9AA] text-ink flex items-center justify-center transition-all cursor-pointer hover:scale-110 active:scale-95"
+                      title="Clear name"
+                      aria-label="Clear name"
+                    >
+                      <X size={12} />
+                    </button>
+                  )}
                 </div>
               </div>
 
@@ -267,9 +278,20 @@ export const Topbar: React.FC<TopbarProps> = ({
                     value={editEmail}
                     onChange={(e) => setEditEmail(e.target.value)}
                     placeholder="e.g. analyst@organization.com"
-                    className="w-full bg-[#FBEBDA] text-ink placeholder-ink-60 text-xs pl-10 pr-4 py-3 rounded-xl border border-[#E8C9AA] focus:outline-none focus:border-[#468D8B] font-medium transition-all"
+                    className="w-full bg-[#FBEBDA] text-ink placeholder-ink-60 text-xs pl-10 pr-9 py-3 rounded-xl border border-[#E8C9AA] focus:outline-none focus:border-[#468D8B] font-medium transition-all"
                   />
                   <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-60" />
+                  {editEmail && (
+                    <button
+                      type="button"
+                      onClick={() => setEditEmail('')}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#E8C9AA]/60 hover:bg-[#E8C9AA] text-ink flex items-center justify-center transition-all cursor-pointer hover:scale-110 active:scale-95"
+                      title="Clear email"
+                      aria-label="Clear email"
+                    >
+                      <X size={12} />
+                    </button>
+                  )}
                 </div>
               </div>
 

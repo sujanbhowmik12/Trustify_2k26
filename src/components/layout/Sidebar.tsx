@@ -63,9 +63,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <div className="h-20 flex items-center px-6 border-b border-[#2d4a57] gap-3">
           <div className="w-10 h-10 rounded-xl overflow-hidden shadow-md border border-[#468D8B]/40 flex-shrink-0 bg-[#FBEBDA] flex items-center justify-center">
             <img
-              src="/logo.png"
+              src="/assets/trustify_logo_transparent.png"
               alt="Trustify Logo"
-              className="w-full h-full object-cover scale-105"
+              className="w-full h-full object-contain"
             />
           </div>
           <div>

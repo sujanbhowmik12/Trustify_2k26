@@ -22,6 +22,7 @@ import {
   ExternalLink,
   Shield,
   HelpCircle,
+  X,
 } from 'lucide-react';
 import { CertificateSummary, ForensicSecurityTest, ForensicTestStatus } from '@/lib/types';
 import { CertificateChainGraphic } from '@/components/ui/CertificateChainGraphic';
@@ -221,13 +222,24 @@ export default function CertificatePage() {
                 value={hostInput}
                 onChange={(e) => setHostInput(e.target.value)}
                 placeholder="Domain name (e.g. expired.badssl.com or github.com)..."
-                className="w-full bg-[#FBEBDA] text-ink placeholder-ink-60 text-sm pl-11 pr-4 py-3.5 rounded-full border border-[#E8C9AA] focus:outline-none focus:border-[#468D8B] focus:ring-2 focus:ring-[#468D8B]/30 font-mono transition-all"
+                className="w-full bg-[#FBEBDA] text-ink placeholder-ink-60 text-sm pl-11 pr-11 py-3.5 rounded-full border border-[#E8C9AA] focus:outline-none focus:border-[#468D8B] focus:ring-2 focus:ring-[#468D8B]/30 font-mono transition-all"
                 disabled={loading}
               />
               <Lock
                 size={18}
                 className="absolute left-4 top-1/2 -translate-y-1/2 text-[#468D8B]"
               />
+              {hostInput && (
+                <button
+                  type="button"
+                  onClick={() => setHostInput('')}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-[#E8C9AA]/60 hover:bg-[#E8C9AA] text-ink flex items-center justify-center transition-all cursor-pointer shadow-sm hover:scale-110 active:scale-95"
+                  title="Clear domain"
+                  aria-label="Clear domain"
+                >
+                  <X size={14} />
+                </button>
+              )}
             </div>
             <button
               type="submit"

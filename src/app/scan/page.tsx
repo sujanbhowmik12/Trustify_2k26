@@ -22,6 +22,7 @@ import {
   Info,
   Copy,
   ExternalLink,
+  X,
 } from 'lucide-react';
 import { Reason, ScanResult } from '@/lib/types';
 import { ScoreRing } from '@/components/ui/ScoreRing';
@@ -224,13 +225,24 @@ function ScanContent() {
                 value={urlInput}
                 onChange={(e) => setUrlInput(e.target.value)}
                 placeholder="https://example.com or suspicious URL..."
-                className="w-full bg-[#FBEBDA] text-ink placeholder-ink-60 text-sm pl-11 pr-4 py-3.5 rounded-full border border-[#E8C9AA] focus:outline-none focus:border-[#468D8B] focus:ring-2 focus:ring-[#468D8B]/30 font-mono transition-all"
+                className="w-full bg-[#FBEBDA] text-ink placeholder-ink-60 text-sm pl-11 pr-11 py-3.5 rounded-full border border-[#E8C9AA] focus:outline-none focus:border-[#468D8B] focus:ring-2 focus:ring-[#468D8B]/30 font-mono transition-all"
                 disabled={loading}
               />
               <Search
                 size={18}
                 className="absolute left-4 top-1/2 -translate-y-1/2 text-[#468D8B]"
               />
+              {urlInput && (
+                <button
+                  type="button"
+                  onClick={() => setUrlInput('')}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-[#E8C9AA]/60 hover:bg-[#E8C9AA] text-ink flex items-center justify-center transition-all cursor-pointer shadow-sm hover:scale-110 active:scale-95"
+                  title="Clear link"
+                  aria-label="Clear link"
+                >
+                  <X size={14} />
+                </button>
+              )}
             </div>
             <button
               type="submit"
