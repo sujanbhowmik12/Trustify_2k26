@@ -6,6 +6,7 @@ import { inspectCertificate } from '@/lib/engines/certificateEngine';
 import { assessWebSecurity } from '@/lib/engines/webSecEngine';
 import { computeUnifiedTrustScore } from '@/lib/engines/scoringEngine';
 import { db } from '@/lib/store';
+import { saveScanRecord, saveAlertRecord } from '@/lib/db';
 import { Alert, ScanResult } from '@/lib/types';
 
 export async function POST(req: NextRequest) {
@@ -42,6 +43,14 @@ export async function POST(req: NextRequest) {
     const urlHash = crypto.createHash('sha256').update(normalizedUrl).digest('hex');
     for (const cached of Array.from(db.scans.values())) {
       if (cached.normalizedUrl === normalizedUrl) {
+        saveScanRecord({
+          id: cached.id,
+          url: cached.inputUrl,
+          score: cached.score,
+          verdict: cached.verdict,
+          latency: cached.durationMs,
+          created_at: cached.createdAt,
+        });
         return NextResponse.json({ ...cached, fromCache: true });
       }
     }
@@ -137,8 +146,18 @@ export async function POST(req: NextRequest) {
       createdAt: new Date().toISOString(),
     };
 
-    // Store in DB
+    // Store in in-memory store
     db.scans.set(scanResult.id, scanResult);
+
+    // Save scan result in persistent SQLite database table (url, score, verdict, latency, created_at)
+    saveScanRecord({
+      id: scanResult.id,
+      url: scanResult.inputUrl,
+      score: scanResult.score,
+      verdict: scanResult.verdict,
+      latency: durationMs,
+      created_at: scanResult.createdAt,
+    });
 
     // Auto-create alert if malicious or suspicious
     if (scanResult.verdict === 'malicious' || scanResult.verdict === 'suspicious') {
@@ -157,6 +176,18 @@ export async function POST(req: NextRequest) {
         createdAt: new Date().toISOString(),
       };
       db.alerts.set(alert.id, alert);
+      saveAlertRecord({
+        id: alert.id,
+        scanId: alert.scanId,
+        type: alert.type,
+        title: alert.title,
+        detail: alert.detail,
+        url: alert.url,
+        severity: alert.severity,
+        isRead: false,
+        isDismissed: false,
+        createdAt: alert.createdAt,
+      });
     }
 
     return NextResponse.json(scanResult);

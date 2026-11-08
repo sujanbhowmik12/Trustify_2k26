@@ -12,6 +12,7 @@ import {
   Plus,
   Check,
   CheckCircle,
+  X,
 } from 'lucide-react';
 import { ApiKeyRecord, WatchlistDomain } from '@/lib/types';
 
@@ -234,14 +235,27 @@ export default function SettingsPage() {
             </p>
 
             <form onSubmit={handleGenerateKey} className="flex flex-col sm:flex-row gap-3 max-w-xl">
-              <input
-                type="text"
-                required
-                value={keyName}
-                onChange={(e) => setKeyName(e.target.value)}
-                placeholder="Key label (e.g. Chrome Extension or Cloudflare Worker)"
-                className="flex-1 bg-[#FBEBDA] text-ink text-xs p-3 rounded-full border border-[#E8C9AA] focus:outline-none focus:border-[#468D8B]"
-              />
+              <div className="relative flex-1">
+                <input
+                  type="text"
+                  required
+                  value={keyName}
+                  onChange={(e) => setKeyName(e.target.value)}
+                  placeholder="Key label (e.g. Chrome Extension or Cloudflare Worker)"
+                  className="w-full bg-[#FBEBDA] text-ink text-xs p-3 pr-9 rounded-full border border-[#E8C9AA] focus:outline-none focus:border-[#468D8B]"
+                />
+                {keyName && (
+                  <button
+                    type="button"
+                    onClick={() => setKeyName('')}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#E8C9AA]/60 hover:bg-[#E8C9AA] text-ink flex items-center justify-center transition-all cursor-pointer hover:scale-110 active:scale-95"
+                    title="Clear input"
+                    aria-label="Clear input"
+                  >
+                    <X size={12} />
+                  </button>
+                )}
+              </div>
               <button
                 type="submit"
                 className="px-6 py-3 rounded-btn bg-[#468D8B] hover:bg-[#3a7a78] text-white font-bold text-xs shadow flex items-center justify-center gap-1.5"
@@ -329,14 +343,27 @@ export default function SettingsPage() {
             </p>
 
             <form onSubmit={handleAddWatchlist} className="flex flex-col sm:flex-row gap-3 max-w-xl">
-              <input
-                type="text"
-                required
-                value={newDomain}
-                onChange={(e) => setNewDomain(e.target.value)}
-                placeholder="domain.com (e.g. mycompany.com)"
-                className="flex-1 bg-[#FBEBDA] text-ink text-xs p-3 rounded-full border border-[#E8C9AA] focus:outline-none focus:border-[#468D8B]"
-              />
+              <div className="relative flex-1">
+                <input
+                  type="text"
+                  required
+                  value={newDomain}
+                  onChange={(e) => setNewDomain(e.target.value)}
+                  placeholder="domain.com (e.g. mycompany.com)"
+                  className="w-full bg-[#FBEBDA] text-ink text-xs p-3 pr-9 rounded-full border border-[#E8C9AA] focus:outline-none focus:border-[#468D8B]"
+                />
+                {newDomain && (
+                  <button
+                    type="button"
+                    onClick={() => setNewDomain('')}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#E8C9AA]/60 hover:bg-[#E8C9AA] text-ink flex items-center justify-center transition-all cursor-pointer hover:scale-110 active:scale-95"
+                    title="Clear domain"
+                    aria-label="Clear domain"
+                  >
+                    <X size={12} />
+                  </button>
+                )}
+              </div>
               <button
                 type="submit"
                 className="px-6 py-3 rounded-btn bg-[#468D8B] hover:bg-[#3a7a78] text-white font-bold text-xs shadow flex items-center justify-center gap-1.5"
@@ -393,23 +420,49 @@ export default function SettingsPage() {
           <form onSubmit={handleSaveProfileSettings} className="space-y-4 text-xs pt-1">
             <div>
               <label className="font-bold text-ink block mb-1">Display Name</label>
-              <input
-                type="text"
-                required
-                value={profileName}
-                onChange={(e) => setProfileName(e.target.value)}
-                className="w-full bg-[#FBEBDA] text-ink p-3 rounded-xl border border-[#E8C9AA] focus:outline-none focus:border-[#468D8B]"
-              />
+              <div className="relative">
+                <input
+                  type="text"
+                  required
+                  value={profileName}
+                  onChange={(e) => setProfileName(e.target.value)}
+                  className="w-full bg-[#FBEBDA] text-ink p-3 pr-9 rounded-xl border border-[#E8C9AA] focus:outline-none focus:border-[#468D8B]"
+                />
+                {profileName && (
+                  <button
+                    type="button"
+                    onClick={() => setProfileName('')}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#E8C9AA]/60 hover:bg-[#E8C9AA] text-ink flex items-center justify-center transition-all cursor-pointer hover:scale-110 active:scale-95"
+                    title="Clear name"
+                    aria-label="Clear name"
+                  >
+                    <X size={12} />
+                  </button>
+                )}
+              </div>
             </div>
             <div>
               <label className="font-bold text-ink block mb-1">Email Address</label>
-              <input
-                type="email"
-                required
-                value={profileEmail}
-                onChange={(e) => setProfileEmail(e.target.value)}
-                className="w-full bg-[#FBEBDA] text-ink p-3 rounded-xl border border-[#E8C9AA] focus:outline-none focus:border-[#468D8B]"
-              />
+              <div className="relative">
+                <input
+                  type="email"
+                  required
+                  value={profileEmail}
+                  onChange={(e) => setProfileEmail(e.target.value)}
+                  className="w-full bg-[#FBEBDA] text-ink p-3 pr-9 rounded-xl border border-[#E8C9AA] focus:outline-none focus:border-[#468D8B]"
+                />
+                {profileEmail && (
+                  <button
+                    type="button"
+                    onClick={() => setProfileEmail('')}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#E8C9AA]/60 hover:bg-[#E8C9AA] text-ink flex items-center justify-center transition-all cursor-pointer hover:scale-110 active:scale-95"
+                    title="Clear email"
+                    aria-label="Clear email"
+                  >
+                    <X size={12} />
+                  </button>
+                )}
+              </div>
             </div>
             <div>
               <label className="font-bold text-ink block mb-1">Role & Permissions</label>

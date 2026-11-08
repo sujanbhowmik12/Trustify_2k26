@@ -14,6 +14,7 @@ import {
   CheckCircle,
   Clock,
   Sparkles,
+  X,
 } from 'lucide-react';
 import { ThreatCategory, ThreatReport } from '@/lib/types';
 
@@ -361,14 +362,27 @@ export default function IntelPage() {
             <form onSubmit={handleCreateReport} className="space-y-4">
               <div>
                 <label className="text-xs font-bold text-ink block mb-1">Target URL</label>
-                <input
-                  type="text"
-                  required
-                  value={formUrl}
-                  onChange={(e) => setFormUrl(e.target.value)}
-                  placeholder="https://suspicious-portal.com/login"
-                  className="w-full bg-[#FBEBDA] text-ink text-xs p-3 rounded-xl border border-[#E8C9AA] focus:outline-none focus:border-[#468D8B] font-mono"
-                />
+                <div className="relative">
+                  <input
+                    type="text"
+                    required
+                    value={formUrl}
+                    onChange={(e) => setFormUrl(e.target.value)}
+                    placeholder="https://suspicious-portal.com/login"
+                    className="w-full bg-[#FBEBDA] text-ink text-xs p-3 pr-9 rounded-xl border border-[#E8C9AA] focus:outline-none focus:border-[#468D8B] font-mono"
+                  />
+                  {formUrl && (
+                    <button
+                      type="button"
+                      onClick={() => setFormUrl('')}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#E8C9AA]/60 hover:bg-[#E8C9AA] text-ink flex items-center justify-center transition-all cursor-pointer hover:scale-110 active:scale-95"
+                      title="Clear URL"
+                      aria-label="Clear URL"
+                    >
+                      <X size={12} />
+                    </button>
+                  )}
+                </div>
               </div>
 
               <div>

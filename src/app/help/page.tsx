@@ -12,6 +12,7 @@ import {
   Mail,
   Send,
   AlertCircle,
+  X,
 } from 'lucide-react';
 
 export default function HelpPage() {
@@ -161,14 +162,27 @@ export default function HelpPage() {
         <form onSubmit={handleSendTicket} className="space-y-3 text-xs">
           <div>
             <label className="font-bold text-ink block mb-1">Subject</label>
-            <input
-              type="text"
-              required
-              value={ticketSubject}
-              onChange={(e) => setTicketSubject(e.target.value)}
-              placeholder="e.g. Domain review request for mysite.com"
-              className="w-full bg-[#FBEBDA] text-ink p-3 rounded-xl border border-[#E8C9AA] focus:outline-none focus:border-[#468D8B]"
-            />
+            <div className="relative">
+              <input
+                type="text"
+                required
+                value={ticketSubject}
+                onChange={(e) => setTicketSubject(e.target.value)}
+                placeholder="e.g. Domain review request for mysite.com"
+                className="w-full bg-[#FBEBDA] text-ink p-3 pr-9 rounded-xl border border-[#E8C9AA] focus:outline-none focus:border-[#468D8B]"
+              />
+              {ticketSubject && (
+                <button
+                  type="button"
+                  onClick={() => setTicketSubject('')}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#E8C9AA]/60 hover:bg-[#E8C9AA] text-ink flex items-center justify-center transition-all cursor-pointer hover:scale-110 active:scale-95"
+                  title="Clear subject"
+                  aria-label="Clear subject"
+                >
+                  <X size={12} />
+                </button>
+              )}
+            </div>
           </div>
 
           <div>

@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     'An intelligent platform that detects phishing and malicious websites by fusing threat analysis, web security assessment, certificate validation, and collaborative threat intelligence into an explainable trust score.',
   icons: {
-    icon: '/logo.png',
+    icon: '/assets/trustify_logo_transparent.png',
   },
 };
 

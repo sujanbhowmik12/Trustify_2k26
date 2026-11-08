@@ -9,6 +9,7 @@ import {
   Trash2,
   ExternalLink,
   Filter,
+  X,
 } from 'lucide-react';
 import { ScanResult, Verdict } from '@/lib/types';
 import { VerdictBadge } from '@/components/ui/VerdictBadge';
@@ -93,12 +94,23 @@ export default function HistoryPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by URL or domain..."
-              className="w-full bg-[#FBEBDA] text-ink placeholder-ink-60 text-xs pl-9 pr-4 py-2.5 rounded-full border border-[#E8C9AA] focus:outline-none focus:border-[#468D8B]"
+              className="w-full bg-[#FBEBDA] text-ink placeholder-ink-60 text-xs pl-9 pr-9 py-2.5 rounded-full border border-[#E8C9AA] focus:outline-none focus:border-[#468D8B]"
             />
             <Search
               size={14}
               className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-60"
             />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#E8C9AA]/60 hover:bg-[#E8C9AA] text-ink flex items-center justify-center transition-all cursor-pointer hover:scale-110 active:scale-95"
+                title="Clear search"
+                aria-label="Clear search"
+              >
+                <X size={12} />
+              </button>
+            )}
           </div>
 
           <div className="flex items-center gap-1.5 w-full sm:w-auto">

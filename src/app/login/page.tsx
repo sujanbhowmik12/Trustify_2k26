@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ShieldCheck, Lock, Mail, Eye, EyeOff, ArrowRight } from 'lucide-react';
+import { ShieldCheck, Lock, Mail, Eye, EyeOff, ArrowRight, X } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -28,9 +28,9 @@ export default function LoginPage() {
           <div className="relative z-10">
             <div className="w-12 h-12 rounded-2xl overflow-hidden shadow-md border border-[#468D8B]/40 mb-6 bg-[#FBEBDA] flex items-center justify-center">
               <img
-                src="/logo.png"
+                src="/assets/trustify_logo_transparent.png"
                 alt="Trustify Logo"
-                className="w-full h-full object-cover scale-105"
+                className="w-full h-full object-contain"
               />
             </div>
             <h2 className="text-3xl font-black tracking-tight leading-tight">
@@ -67,9 +67,20 @@ export default function LoginPage() {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full bg-[#FBEBDA] text-ink text-xs pl-10 pr-3 py-3 rounded-xl border border-[#E8C9AA] focus:outline-none focus:border-[#468D8B]"
+                    className="w-full bg-[#FBEBDA] text-ink text-xs pl-10 pr-9 py-3 rounded-xl border border-[#E8C9AA] focus:outline-none focus:border-[#468D8B]"
                   />
                   <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-60" />
+                  {email && (
+                    <button
+                      type="button"
+                      onClick={() => setEmail('')}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#E8C9AA]/60 hover:bg-[#E8C9AA] text-ink flex items-center justify-center transition-all cursor-pointer hover:scale-110 active:scale-95"
+                      title="Clear email"
+                      aria-label="Clear email"
+                    >
+                      <X size={12} />
+                    </button>
+                  )}
                 </div>
               </div>
 
