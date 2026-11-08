@@ -16,7 +16,7 @@
 
 [Demo](#-demo) · [Features](#-features) · [Architecture](#-architecture) · [Quick Start](#-quick-start) · [API](#-api-overview) · [Team](#-team)
 
-<img src="docs/screenshots/dashboard.png" alt="Trustify dashboard" width="900" />
+<img src="[docs/screenshots/dashboard.png](https://drive.google.com/file/d/1YiF2vM-kPLvvPIMLYRiiVwgmlbznzqq5/view?usp=sharing)" alt="Trustify dashboard" width="900" />
 
 </div>
 
@@ -281,11 +281,11 @@ Strategy and checklists: [`docs/14_TESTING_QA.md`](docs/14_TESTING_QA.md)
 | | Name | Role | GitHub |
 |---|---|---|---|
 | 👤 | `<Member 1>` | Team Lead · Full-stack | [@username](https://github.com/username) |
-| 👤 | `<Member 2>` | Frontend & UI/UX | [@username](https://github.com/username) |
-| 👤 | `<Member 3>` | Backend & Security Engines | [@username](https://github.com/username) |
+| 👤 | `Arghya Chowdhury` | Frontend & UI/UX | [@username](https://github.com/username) |
+| 👤 | `Sayan Pattanaya` | Backend & Security Engines | [@username](https://github.com/username) |
 | 👤 | `<Member 4>` | ML, QA & DevOps | [@username](https://github.com/username) |
 
-**Built for:** `<Hackathon name>` · `<Date>`
+**Built for:** `Hackmatrix` · `<Date>`
 
 ---
 
