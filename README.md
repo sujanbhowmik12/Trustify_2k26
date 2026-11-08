@@ -1,311 +1,226 @@
-<div align="center">
+<p align="center">
+  <img src="assets/trustify-logo.png" alt="Trustify Logo" width="140" />
+</p>
 
-<img src="assets/logo.png" alt="Trustify logo" width="130" />
+<h1 align="center">🛡️ Trustify — AI-Powered Web Threat Detection & Digital Trust Intelligence</h1>
 
-# Trustify
+<p align="center">
+  <em>Detect · Analyze · Stay Safe</em>
+</p>
 
-### AI-Powered Web Threat Detection & Digital Trust Intelligence
+<p align="center">
+  <img src="https://img.shields.io/badge/Hackathon-HackMatrix%202026-468D8B?style=for-the-badge&logo=shield" alt="HackMatrix 2026" />
+  <img src="https://img.shields.io/badge/Next.js%2014-App%20Router-213843?style=for-the-badge&logo=next.js&logoColor=white" alt="Next.js 14" />
+  <img src="https://img.shields.io/badge/TypeScript-5.6-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
+  <img src="https://img.shields.io/badge/Security-Passive%20Scan-74B3A8?style=for-the-badge&logo=security" alt="Passive Inspection" />
+  <img src="https://img.shields.io/badge/License-MIT-FEAF76?style=for-the-badge" alt="License: MIT" />
+</p>
 
-**Detect phishing websites, fraudulent payment portals and Certificate Authority key vulnerabilities, with a unified 0–100 trust score in seconds.**
+<p align="center">
+  <a href="#demo"><b>Demo</b></a> •
+  <a href="#features"><b>Features</b></a> •
+  <a href="#architecture"><b>Architecture</b></a> •
+  <a href="#quick-start"><b>Quick Start</b></a> •
+  <a href="#api"><b>API</b></a> •
+  <a href="#team"><b>Team</b></a>
+</p>
 
-![Status](https://img.shields.io/badge/status-hackathon%20build-468D8B?style=for-the-badge)
-![Next.js](https://img.shields.io/badge/Next.js-14-213843?style=for-the-badge&logo=nextdotjs)
-![FastAPI](https://img.shields.io/badge/FastAPI-Python%203.11-468D8B?style=for-the-badge&logo=fastapi)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-74B3A8?style=for-the-badge&logo=postgresql&logoColor=213843)
-![License](https://img.shields.io/badge/license-MIT-FEAF76?style=for-the-badge)
-
-[Demo](#-demo) · [Features](#-features) · [Architecture](#-architecture) · [Quick Start](#-quick-start) · [API](#-api-overview) · [Team](#-team)
-
-<img src="[docs/screenshots/dashboard.png](https://drive.google.com/file/d/1YiF2vM-kPLvvPIMLYRiiVwgmlbznzqq5/view?usp=sharing)" alt="Trustify dashboard" width="900" />
-
-</div>
-
----
-
-## 📌 Table of Contents
-1. [Problem Statement](#-problem-statement)
-2. [Our Solution](#-our-solution)
-3. [Features](#-features)
-4. [Demo](#-demo)
-5. [Architecture](#-architecture)
-6. [Tech Stack](#-tech-stack)
-7. [Quick Start](#-quick-start)
-8. [Test URLs](#-try-these-test-urls)
-9. [API Overview](#-api-overview)
-10. [MCP Server](#-mcp-server)
-11. [Project Structure](#-project-structure)
-12. [Security & Responsible Use](#-security--responsible-use)
-13. [Testing](#-testing)
-14. [Roadmap](#-roadmap)
-15. [Team](#-team)
-16. [License](#-license)
+<p align="center">
+  <img src="assets/trustify-dashboard.png" alt="Trustify – AI-Powered Digital Trust Intelligence Dashboard" width="100%" />
+  <br />
+  <em>Trustify – AI-Powered Digital Trust Intelligence Dashboard</em>
+</p>
 
 ---
 
-## 🎯 Problem Statement
+<a id="demo"></a>
+## 🖥️ Demo & Overview
 
-The internet powers banking, education, recruitment, e-commerce and payments, but it is also full of **phishing sites, fake payment links, fake recruitment portals, impersonated organisations, malicious redirects and credential-harvesting attacks**. A fraudulent site can look identical to a real bank or university portal.
+**Trustify** is an intelligent web security platform that provides real-time detection of phishing websites, fraudulent recruitment and payment portals, deceptive domain impersonation, and Certificate Authority (CA) trust infrastructure vulnerabilities in seconds.
 
-The web's **trust infrastructure** is under pressure too. Weak Certificate Authority key generation, as highlighted by the recent **eMudhra TLS certificate incident**, can allow fraudulent certificates to be issued for website impersonation. This makes **certificate transparency, cryptographic validation and continuous monitoring** essential.
-
-Existing tools solve these problems **separately**, and ordinary users cannot tell a safe site from a dangerous one.
-
-## 💡 Our Solution
-
-**Trustify** fuses four engines into one accessible platform and returns a single, **explainable trust score (0–100)** for any URL.
-
-| Engine | What it does |
-|---|---|
-| 🧠 **Threat Analysis** | ML + heuristics for phishing, brand lookalikes and homoglyphs, risky redirects, malicious page content |
-| 🔐 **Certificate Forensics** | TLS chain checks, key strength, SHA-1 and weak keys, shared-key detection, Certificate Transparency timeline and anomalies |
-| 🧱 **Web Security Assessment** | Security headers, cookie flags, mixed content, information disclosure (passive only) |
-| 🤝 **Collaborative Threat Intelligence** | Community reports and voting, live threat feeds, trending threats, IOC export |
-
-Every verdict comes with **plain-language reasons** and a **recommended action**, so users understand *why* a site is risky.
+- **Interactive Security Dashboard**: Real-time multi-engine inspection running on Next.js 14 with instant trust verdicts.
+- **Local Application Access**: `http://localhost:3000`
+- **Scenarios Ready-to-Test**: One-click assessment for deceptive domain impersonation, expired/self-signed SSL certificates, and phishing vectors.
 
 ---
 
-## ✨ Features
+<a id="features"></a>
+## 🌟 Core Pillars & Architectural Engines
 
-- 🔍 **URL Scanner**: Safe / Suspicious / Malicious verdict with live progress (SSE)
-- 📊 **Dashboard**: total scans, safe websites, threats blocked, average latency, 7-day trust-score trend, recent threat alerts
-- 🔐 **Certificate Forensics**: chain visualisation, expiry, key details, CT log timeline, weak-key analysis
-- 🛡️ **eMudhra CA Defense**: continuous CT log monitoring and weak RSA key generation detection
-- 🧬 **Explainable AI**: top signals shown as reason codes such as `BRAND_LOOKALIKE` and `NEW_DOMAIN_LT_30D`
-- 🔔 **Security Alerts**: severity-based alerts (High / Medium / Low) for malicious sites and certificate issues
-- 🕘 **Scan History**: searchable, filterable history with CSV export
-- 🌐 **Threat Intelligence Hub**: report URLs, vote, trending domains, IOC export (CSV / JSON / STIX-lite)
-- 👀 **Watchlist**: monitor your own domains for certificate expiry and unexpected issuance
-- 🔌 **Settings & API**: API keys, public check endpoint and an MCP server for AI agents
-- ♿ **Accessible, responsive UI**: WCAG AA contrast, keyboard friendly, mobile ready
+Trustify unifies four independent security inspection engines into an explainable **0–100 Digital Trust Score**:
+
+1. **Threat Analysis Engine (ML & Heuristics)**
+   - Brand lookalike and typosquatting detection using Levenshtein distance and phonetic/homoglyph character substitution (e.g. `paypa1`, `micros0ft`, `bank0famerica`).
+   - Lexical URL feature extraction: Shannon entropy, subdomain depth, suspicious TLDs, Punycode/IDN attacks, `@` credentials deception, and raw IP address hostnames.
+   - HTML DOM analysis: password forms submitting to external domains, obfuscated JavaScript payloads (`eval`, `unescape`, `atob`), and missing security attributes.
+
+2. **Certificate Validation & CT Forensics Engine**
+   - Cryptographic TLS chain validation: leaf, intermediate, and root trust anchors.
+   - Flagging of expired certificates, self-signed chains, hostname mismatches, weak keys (`RSA < 2048` or `EC < 256`), and deprecated `SHA-1` signatures.
+   - **eMudhra CA Weak-Key Heuristics**: Automated small-prime trial division on RSA moduli, duplicate SPKI public key detection across unrelated domains, and ROCA vulnerability tests.
+   - **Certificate Transparency (CT) Monitoring**: Public `crt.sh` timeline extraction and alerting on anomalous or unexpected certificate authorities.
+
+3. **Web Security Assessment Engine (Passive Only)**
+   - Security headers audit: `Strict-Transport-Security` (HSTS), `Content-Security-Policy` (CSP), `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, and `Permissions-Policy`.
+   - Cookie security validation: `Secure`, `HttpOnly`, and `SameSite` flags.
+   - Cleartext HTTP-to-HTTPS redirect verification and server technology version disclosure detection.
+   - Strictly passive inspection: no active exploitation, no port scanning.
+
+4. **Collaborative Threat Intelligence Network**
+   - Community-submitted threat reports with category tags (Phishing, Fake Payment, Fake Job Portal, Impersonation).
+   - Peer voting (upvoting/downvoting) and dynamic analyst reputation scoring.
+   - Indicators of Compromise (IOC) export in **CSV**, **JSON**, and **STIX 2.1** formats.
+
+5. **SSRF Guard Protection**
+   - Deep protection against Server-Side Request Forgery: blocks loopback (`127.0.0.0/8`), RFC1918 private subnets, link-local cloud metadata endpoints (`169.254.169.254`), CGNAT, and IPv6 mappings. Independent DNS resolution and pinned transport.
 
 ---
 
-## 🎬 Demo
-
-| Dashboard | URL Scanner |
-|---|---|
-| ![Dashboard](docs/screenshots/dashboard.png) | ![Scanner](docs/screenshots/scan-result.png) |
-
-| Certificate Forensics | Threat Intelligence |
-|---|---|
-| ![Certificate](docs/screenshots/certificate.png) | ![Intel](docs/screenshots/intel.png) |
-
-🎥 **Demo video:** `<add link>` · 🌐 **Live app:** `<add link>`
-
----
-
-## 🏗️ Architecture
+<a id="architecture"></a>
+## 🧭 Architecture & System Design
 
 ```
-Browser ──► Next.js Frontend ──► FastAPI Gateway ──► Redis (queue · cache · pub/sub)
-                                       │                    │
-                                       ▼                    ▼
-                                 PostgreSQL          Celery Scan Workers
-                                                     ├─ Threat Engine (ML)
-                                                     ├─ Certificate Engine (+ CT logs)
-                                                     ├─ Web Security Engine
-                                                     └─ Intel Engine (feeds + community)
+                    ┌───────────────────────────────────────────────┐
+                    │       Next.js 14 Frontend & Client UI        │
+                    │   (App Router · Tailwind CSS · shadcn/ui)     │
+                    └───────────────────────┬───────────────────────┘
+                                            │ HTTPS / REST API & SSE Events
+                                   ┌────────▼────────┐
+                                   │ Next.js API / GW│  Auth · SSRF Guard · Rate Limit
+                                   └───┬─────────┬───┘
+                                       │         │
+                 ┌─────────────────────┼─────────┴─────────────────────┐
+                 │                     │                               │
+        ┌────────▼────────┐   ┌────────▼────────┐             ┌────────▼────────┐
+        │  Threat Engine  │   │   Cert Engine   │             │  WebSec Engine  │
+        │  ML Heuristics  │   │  TLS / CT Logs  │             │ Security Headers│
+        └────────┬────────┘   └────────┬────────┘             └────────┬────────┘
+                 │                     │                               │
+                 └─────────────────────┼───────────────────────────────┘
+                                       │
+                              ┌────────▼────────┐
+                              │  Intel Engine   │
+                              │ Community Feeds │
+                              └────────┬────────┘
+                                       │
+                         ┌─────────────▼─────────────┐
+                         │   0–100 Trust Score Agg   │
+                         │ Safe | Suspicious | Alert │
+                         └───────────────────────────┘
 ```
 
-**Scoring:** `risk = 0.40·threat + 0.25·certificate + 0.20·web-security + 0.15·intel`, then `score = 100 − risk`
-**Verdict:** ≥ 80 **Safe** · 50–79 **Suspicious** · < 50 **Malicious** (confirmed feed hits override)
+---
 
-Full design: [`docs/03_ARCHITECTURE.md`](docs/03_ARCHITECTURE.md)
+## 📐 Scoring Formula & Verdicts
+
+$$\text{Risk} = 0.40 \times \text{ThreatRisk} + 0.25 \times \text{CertRisk} + 0.20 \times \text{WebSecRisk} + 0.15 \times \text{IntelRisk}$$
+$$\text{Score} = \max(0, \min(100, 100 - \text{Risk}))$$
+
+- **Safe ($\ge 80$)**: Valid TLS certificates, secure headers, reputable domain history, zero phishing indicators.
+- **Suspicious ($50 - 79$)**: Configuration anomalies, expiring certificates, or newly registered infrastructure (< 30 days old).
+- **Malicious ($< 50$)**: Brand impersonation, active threat feed hits, shared compromised cryptographic keys, or credential-harvesting forms.
 
 ---
 
-## 🧰 Tech Stack
-
-| Layer | Technologies |
-|---|---|
-| **Frontend** | Next.js 14, TypeScript, Tailwind CSS, shadcn/ui, Recharts, TanStack Query |
-| **Backend** | FastAPI, Pydantic v2, SQLAlchemy 2, Alembic, Celery |
-| **Data** | PostgreSQL 16, Redis 7 |
-| **ML / Security** | scikit-learn, XGBoost, cryptography, dnspython, RapidFuzz |
-| **Browser sandbox** | Playwright (isolated container) |
-| **DevOps** | Docker Compose, GitHub Actions |
-| **Integrations** | crt.sh (Certificate Transparency), OpenPhish, URLhaus, Google Safe Browsing, VirusTotal *(all optional)* |
-
----
-
+<a id="quick-start"></a>
 ## 🚀 Quick Start
 
-### Prerequisites
-Docker and Docker Compose v2, Git. Optional for local development: Node.js 20 and Python 3.11.
-
-### Run with Docker
+### 1. Installation
 ```bash
-git clone https://github.com/<your-username>/trustify.git
-cd trustify
-cp .env.example .env        # add optional API keys
-docker compose up --build
+# Clone or navigate to the repository
+cd Trustify
+
+# Install dependencies
+npm install
 ```
 
-| Service | URL |
-|---|---|
-| Web app | http://localhost:3000 |
-| API docs (Swagger) | http://localhost:8000/docs |
-
+### 2. Development Server
 ```bash
-make migrate   # apply database migrations
-make seed      # load demo data
+npm run dev
 ```
+Open **[http://localhost:3000](http://localhost:3000)** in your browser.
 
-**Demo login (local development only):** `demo@trustify.app` / `Demo@12345`
-
-### Environment variables
-All variables are documented in [`docs/09_SETUP.md`](docs/09_SETUP.md). External API keys are **optional**. Set `MOCK_EXTERNAL=true` to run fully offline with fixtures.
+### 3. Production Build
+```bash
+npm run build
+npm start
+```
 
 ---
 
-## 🧪 Try These Test URLs
+## 🧪 Quick Test Scenarios
 
-| URL | Expected result |
-|---|---|
-| `https://example.com` | ✅ Safe |
-| `https://expired.badssl.com` | ⚠️ Certificate expired |
-| `https://self-signed.badssl.com` | ⚠️ Self-signed certificate |
-| `https://wrong.host.badssl.com` | ⚠️ Hostname mismatch |
-| `http://neverssl.com` | ⚠️ No TLS |
-| Local phishing fixture (`tests/fixtures/phish_site`) | ❌ Malicious: brand lookalike, off-domain login form |
+Try scanning these test targets directly in the UI or via API:
 
----
-
-## 🔌 API Overview
-
-Base path: `/api/v1` · Full reference: [`docs/05_API.md`](docs/05_API.md) · Interactive docs at `/docs`
-
-| Method | Endpoint | Purpose |
+| URL / Target | Expected Verdict | Primary Reason Codes |
 |---|---|---|
-| `POST` | `/scans` | Start a scan |
-| `GET` | `/scans/{id}` | Get verdict, score and reasons |
-| `GET` | `/scans/{id}/events` | Live progress (SSE) |
-| `POST` | `/certificates/check` | Analyse a host's certificate |
-| `GET` | `/certificates/ct/{domain}` | Certificate Transparency timeline |
-| `POST` | `/intel/reports` | Report a malicious URL |
-| `GET` | `/dashboard/summary` | Dashboard metrics |
-| `GET` | `/public/check?url=` | Lightweight check for extensions (API key) |
+| `https://paypa1-secure-login.com/auth/verify` | ✖ **Malicious** (Score 12) | `BRAND_LOOKALIKE`, `NEW_DOMAIN_LT_30D`, `LOGIN_FORM_OFFDOMAIN` |
+| `https://expired.badssl.com` | ⚠ **Suspicious** (Score 54) | `EXPIRED` (Certificate expired) |
+| `https://self-signed.badssl.com` | ⚠ **Suspicious** (Score 58) | `SELF_SIGNED` (Untrusted authority) |
+| `https://example.com` | ✔ **Safe** (Score 96) | All security checks passed |
+| `http://169.254.169.254/latest/meta-data` | 🛑 **Blocked** (HTTP 400) | `SSRF_BLOCKED` (Internal metadata access rejected) |
 
 ---
 
-## 🤖 MCP Server
+<a id="api"></a>
+## 🔌 API Reference (`/api/v1`)
 
-Trustify includes a **Model Context Protocol** server so AI agents can use it as a tool: `scan_url`, `check_certificate`, `lookup_indicator`, `report_threat`, `get_trending_threats`.
-
-Setup details: [`docs/12_MCP_CONNECTION.md`](docs/12_MCP_CONNECTION.md)
-
----
-
-## 📁 Project Structure
-
-```
-trustify/
-├─ apps/
-│  ├─ web/        # Next.js frontend
-│  └─ api/        # FastAPI backend, engines, workers, ML
-├─ mcp/           # Trustify MCP server
-├─ docs/          # PRD, design, architecture, API, ...
-├─ assets/        # Logo and brand assets
-├─ docker-compose.yml
-├─ .env.example
-└─ Makefile
-```
-
-### 📚 Documentation
-| Doc | Doc |
-|---|---|
-| [PRD](docs/01_PRD.md) | [Testing & QA](docs/14_TESTING_QA.md) |
-| [Design System](docs/02_DESIGN.md) | [Auth & Security](docs/11_AUTH_SECURITY.md) |
-| [Architecture](docs/03_ARCHITECTURE.md) | [MCP Connection](docs/12_MCP_CONNECTION.md) |
-| [Database](docs/04_DATABASE.md) | [Integrations](docs/13_INTEGRATIONS.md) |
-| [API](docs/05_API.md) | [Debugging](docs/15_DEBUGGING.md) |
-| [Agents](docs/06_AGENTS.md) | [Setup](docs/09_SETUP.md) |
-| [Implementation Plan](docs/08_PROJECT_IMPLEMENTATION.md) | [Feature Development](docs/10_FEATURE_DEVELOPMENT.md) |
-
----
-
-## 🔒 Security & Responsible Use
-
-- Scanning is **passive and non-intrusive**: no exploitation, brute forcing or port scanning.
-- All outbound fetching goes through an **SSRF-safe client** (private, loopback and metadata IPs blocked, redirects re-validated, DNS pinned).
-- Page rendering runs in an **isolated browser sandbox**.
-- Passwords are hashed with **Argon2id**, with short-lived JWTs, rotating refresh tokens and rate limiting on sensitive routes.
-- Use Trustify only on sites you are permitted to test.
-
-Details: [`docs/11_AUTH_SECURITY.md`](docs/11_AUTH_SECURITY.md) · To report a vulnerability, email `<security contact>`.
-
----
-
-## ✅ Testing
-
-```bash
-make lint        # ruff, mypy, eslint, tsc
-make test        # backend + frontend unit/integration tests
-make e2e         # Playwright end-to-end tests
-make eval-model  # ML precision / recall / false-positive report
-```
-
-Strategy and checklists: [`docs/14_TESTING_QA.md`](docs/14_TESTING_QA.md)
-
----
-
-## 🎨 Brand & Design
-
-| Token | Hex | Use |
+| Method | Endpoint | Description |
 |---|---|---|
-| Deep teal | `#213843` | Sidebar and background |
-| Teal | `#468D8B` | Primary buttons, active items |
-| Soft teal | `#74B3A8` | Charts, highlights |
-| Warm cream | `#F6DAC0` | Cards |
-| Peach | `#FEAF76` | Warnings, suspicious |
-| Coral | `#DA6D58` | Critical, malicious |
+| `POST` | `/api/v1/scans` | Submit a URL for real-time multi-engine scan |
+| `GET` | `/api/v1/scans/{id}/events` | Server-Sent Events (SSE) live progress stream |
+| `POST` | `/api/v1/certificates/check` | Inspect TLS certificate, chain, and eMudhra weak-key heuristics |
+| `GET` | `/api/v1/certificates/ct/{domain}` | Certificate Transparency audit trail from crt.sh |
+| `GET` | `/api/v1/intel/feed` | Collaborative threat reports feed (filterable by category) |
+| `POST` | `/api/v1/intel/reports` | Submit a community threat report |
+| `POST` | `/api/v1/intel/reports/{id}/vote` | Upvote or downvote a reported threat |
+| `GET` | `/api/v1/intel/export?format=csv\|json\|stix` | Export IOCs in CSV, JSON, or STIX 2.1 |
+| `GET` | `/api/v1/public/check?url=` | High-speed cache-first check for extensions and AI agents |
+| `GET` | `/api/v1/dashboard/summary` | Executive KPIs, donut ratios, and 7-day trend |
+| `GET` | `/api/v1/health` | Service health status and engine status |
 
 ---
 
-## 🗺️ Roadmap
+## 🤖 Model Context Protocol (MCP) Server
 
-- [x] URL scan with explainable verdicts
-- [x] Certificate forensics and CT monitoring
-- [x] Community threat intelligence
-- [ ] Browser extension (Chrome / Edge)
-- [ ] PDF security reports
-- [ ] Live CT-log streaming for watchlist domains
-- [ ] STIX/TAXII sharing
-- [ ] Organisation dashboards and team workspaces
-
----
-
-## 👥 Team
-
-| | Name | Role | GitHub |
-|---|---|---|---|
-| 👤 | `<Member 1>` | Team Lead · Full-stack | [@username](https://github.com/username) |
-| 👤 | `Arghya Chowdhury` | Frontend & UI/UX | [@username](https://github.com/username) |
-| 👤 | `Sayan Pattanaya` | Backend & Security Engines | [@username](https://github.com/username) |
-| 👤 | `<Member 4>` | ML, QA & DevOps | [@username](https://github.com/username) |
-
-**Built for:** `Hackmatrix` · `<Date>`
+Connect Trustify to any MCP-compatible AI agent (Claude, Antigravity, Cursor):
+```bash
+# Start MCP server
+python mcp/fraudguard_mcp/server.py
+```
+Tools provided:
+- `scan_url(url, deep)`
+- `check_certificate(host, port)`
+- `report_threat(url, category, description)`
+- `get_trending_threats(window)`
 
 ---
 
-## 🤝 Contributing
+## 🎨 UI/UX Design System Tokens
 
-1. Fork the repo and create a branch: `git checkout -b feat/your-feature`
-2. Follow the standards in [`AGENTS.md`](AGENTS.md) and run `make lint test`
-3. Use [Conventional Commits](https://www.conventionalcommits.org/) (`feat:`, `fix:`, `docs:`)
-4. Open a Pull Request with a clear description and screenshots for UI changes
+- **Deep Teal (`#213843`)**: Sidebar, app background, primary text on cream
+- **Teal (`#468D8B`)**: Primary buttons, active tabs, Safe status
+- **Soft Teal (`#74B3A8`)**: Highlights, charts, subtle accents
+- **Warm Cream (`#F6DAC0`)**: Clean card surfaces, readable content cards
+- **Soft Cream (`#FBEBDA`)**: Inputs and nested cards
+- **Peach (`#FEAF76`)**: Suspicious / medium severity warning
+- **Coral (`#DA6D58`)**: Malicious / high severity alert
 
-## 🙏 Acknowledgements
+---
 
-OpenPhish · abuse.ch URLhaus · PhishTank · crt.sh · Tranco list · Google Safe Browsing · badssl.com
+<a id="team"></a>
+## 👥 Team & HackMatrix 2026
 
-## 📄 License
+Developed with pride for **HackMatrix 2026** under the **AI-Powered Web Threat Detection & Digital Trust Intelligence** challenge.
 
-Released under the [MIT License](LICENSE).
+- **Project**: Trustify
+- **Event**: HackMatrix 2026
+- **License**: MIT
 
-<div align="center">
+---
 
-**Trustify** · *Because trust should be verified, not assumed.* 🛡️
+## ⚖️ Responsible Use Policy
 
-</div>
+Trustify is strictly designed for **defense, validation, and threat mitigation**. All scans are passive. No exploit payloads, unauthorized port scans, or intrusive attacks are ever performed.
+
