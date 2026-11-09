@@ -20,6 +20,8 @@ build
 *.db-wal
 *.db-shm
 *.sqlite
+trustify_data.json
+.trustify_data.json
 
 # debug
 npm-debug.log*

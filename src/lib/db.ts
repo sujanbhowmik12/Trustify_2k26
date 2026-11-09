@@ -1,4 +1,6 @@
 import crypto from 'crypto';
+import fs from 'fs';
+import path from 'path';
 import { neon, NeonQueryFunction } from '@neondatabase/serverless';
 
 export interface ScanRecord {
@@ -71,17 +73,102 @@ declare global {
   } | undefined;
 }
 
+function getLocalDataFilePath(): string {
+  return path.join(process.cwd(), '.trustify_data.json');
+}
+
+function loadLocalData(): { scans: ScanRecord[]; alerts: AlertRecord[] } | null {
+  try {
+    const filePath = getLocalDataFilePath();
+    if (fs.existsSync(filePath)) {
+      const raw = fs.readFileSync(filePath, 'utf8');
+      return JSON.parse(raw);
+    }
+  } catch {
+    // Ignore read errors
+  }
+  return null;
+}
+
+function saveLocalData(): void {
+  try {
+    const filePath = getLocalDataFilePath();
+    const data = {
+      scans: Array.from(memoryDb.scans.values()),
+      alerts: Array.from(memoryDb.alerts.values()),
+    };
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
+  } catch {
+    // Ignore write errors (e.g. read-only filesystem on serverless)
+  }
+}
+
 function getMemoryDb() {
   if (!global.__TRUSTIFY_MEM_DB) {
+    const scansMap = new Map<string, ScanRecord>();
+    const alertsMap = new Map<string, AlertRecord>();
+
+    const localData = loadLocalData();
+    if (localData) {
+      if (Array.isArray(localData.scans)) {
+        for (const s of localData.scans) {
+          scansMap.set(s.id, s);
+        }
+      }
+      if (Array.isArray(localData.alerts)) {
+        for (const a of localData.alerts) {
+          alertsMap.set(a.id, a);
+        }
+      }
+    }
+
     global.__TRUSTIFY_MEM_DB = {
-      scans: new Map<string, ScanRecord>(),
-      alerts: new Map<string, AlertRecord>(),
+      scans: scansMap,
+      alerts: alertsMap,
     };
   }
   return global.__TRUSTIFY_MEM_DB;
 }
 
 const memoryDb = getMemoryDb();
+
+function syncWithGlobalStore() {
+  if (typeof global !== 'undefined' && (global as any).__TRUSTIFY_DB) {
+    const gdb = (global as any).__TRUSTIFY_DB;
+    if (gdb.scans && typeof gdb.scans.entries === 'function') {
+      for (const [id, scan] of gdb.scans.entries()) {
+        if (!memoryDb.scans.has(id)) {
+          memoryDb.scans.set(id, {
+            id: scan.id,
+            url: scan.inputUrl || scan.normalizedUrl || id,
+            score: Math.round(Number(scan.score) || 0),
+            verdict: (scan.verdict || 'unknown') as any,
+            latency: Math.round(Number(scan.durationMs) || 0),
+            created_at: scan.createdAt || new Date().toISOString(),
+          });
+        }
+      }
+    }
+    if (gdb.alerts && typeof gdb.alerts.entries === 'function') {
+      for (const [id, alert] of gdb.alerts.entries()) {
+        if (!memoryDb.alerts.has(id)) {
+          memoryDb.alerts.set(id, {
+            id: alert.id,
+            scan_id: alert.scanId,
+            type: alert.type,
+            title: alert.title,
+            detail: alert.detail,
+            url: alert.url,
+            severity: alert.severity,
+            is_read: alert.isRead ? 1 : 0,
+            is_dismissed: alert.isDismissed ? 1 : 0,
+            created_at: alert.createdAt,
+          });
+        }
+      }
+    }
+  }
+}
 
 // Neon PostgreSQL connection handling
 function getDatabaseUrl(): string | undefined {
@@ -179,6 +266,7 @@ export async function saveScanRecord(record: {
   // Always update in-memory cache
   memoryDb.scans.set(id, scanRecord);
   cachedScanStats = null;
+  saveLocalData();
 
   const sql = getPostgresClient();
   if (sql) {
@@ -240,6 +328,7 @@ export async function saveAlertRecord(alert: {
   // Always update in-memory cache
   memoryDb.alerts.set(id, alertRecord);
   cachedScanStats = null;
+  saveLocalData();
 
   const sql = getPostgresClient();
   if (sql) {
@@ -296,6 +385,7 @@ export async function getAllScanRecords(limit = 100): Promise<ScanRecord[]> {
 }
 
 function getMemoryStats(): StatsResponse {
+  syncWithGlobalStore();
   const scans = Array.from(memoryDb.scans.values());
   const totalScans = scans.length;
   let safeCount = 0;

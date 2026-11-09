@@ -86,7 +86,7 @@ export default function DashboardPage() {
   useEffect(() => {
     async function loadStats() {
       try {
-        const res = await fetch('/api/stats');
+        const res = await fetch('/api/stats', { cache: 'no-store' });
         if (res.ok) {
           const json = await res.json();
           setData(json);
@@ -98,6 +98,35 @@ export default function DashboardPage() {
       }
     }
     loadStats();
+
+    const handleUpdate = () => {
+      loadStats();
+    };
+
+    window.addEventListener('trustify_alerts_updated', handleUpdate);
+    window.addEventListener('trustify_scans_updated', handleUpdate);
+    window.addEventListener('focus', handleUpdate);
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        loadStats();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    const interval = setInterval(() => {
+      if (typeof document !== 'undefined' && document.visibilityState === 'visible') {
+        loadStats();
+      }
+    }, 3500);
+
+    return () => {
+      window.removeEventListener('trustify_alerts_updated', handleUpdate);
+      window.removeEventListener('trustify_scans_updated', handleUpdate);
+      window.removeEventListener('focus', handleUpdate);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      clearInterval(interval);
+    };
   }, []);
 
   const {
