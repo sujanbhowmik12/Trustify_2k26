@@ -3,7 +3,7 @@ import { getScanStats } from '@/lib/db';
 
 export async function GET() {
   try {
-    const stats = getScanStats();
+    const stats = await getScanStats();
     return NextResponse.json(stats);
   } catch (err: any) {
     return NextResponse.json(

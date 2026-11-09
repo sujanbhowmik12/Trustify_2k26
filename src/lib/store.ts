@@ -199,8 +199,8 @@ function initDb() {
 
 export const db = initDb();
 
-export function getDashboardSummary(): DashboardSummary {
-  const stats = getScanStats();
+export async function getDashboardSummary(): Promise<DashboardSummary> {
+  const stats = await getScanStats();
 
   return {
     kpis: {

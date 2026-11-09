@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
     const urlHash = crypto.createHash('sha256').update(normalizedUrl).digest('hex');
     for (const cached of db.scans.values()) {
       if (cached.normalizedUrl === normalizedUrl) {
-        saveScanRecord({
+        await saveScanRecord({
           id: cached.id,
           url: cached.inputUrl,
           score: cached.score,
@@ -152,8 +152,8 @@ export async function POST(req: NextRequest) {
     // Store in in-memory store
     db.scans.set(scanResult.id, scanResult);
 
-    // Save scan result in persistent SQLite database table (url, score, verdict, latency, created_at)
-    saveScanRecord({
+    // Save scan result in persistent database (PostgreSQL / memory)
+    await saveScanRecord({
       id: scanResult.id,
       url: scanResult.inputUrl,
       score: scanResult.score,
@@ -179,7 +179,7 @@ export async function POST(req: NextRequest) {
         createdAt: new Date().toISOString(),
       };
       db.alerts.set(alert.id, alert);
-      saveAlertRecord({
+      await saveAlertRecord({
         id: alert.id,
         scanId: alert.scanId,
         type: alert.type,

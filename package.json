@@ -11,6 +11,7 @@
     "test": "tsx tests/engines.test.ts"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.2.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.446.0",
     "next": "14.2.18",
